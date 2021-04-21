@@ -11,7 +11,7 @@ if __name__ == "__main__":
     save_model_path = "./wine_review_model_state.bin"
     
     # eval message
-    review = "taste like shit"
+    review = "tastes like shit"
     print(f"{review}")
     
     np.random.seed(RANDOM_SEED)
@@ -40,12 +40,13 @@ if __name__ == "__main__":
     inputs = {
       'review_text': review,
       'input_ids': encoding['input_ids'].flatten(),
-      'attention_mask': encoding['attention_mask'].flatten(),
-      'targets': torch.tensor(target, dtype=torch.long)
+      'attention_mask': encoding['attention_mask'].flatten()
     }
     
-    score = model(input_ids=inputs["input_ids"].to(device), 
-                               attention_mask=inputs["attention_mask"].to(device))
+    input_ids = torch.unsqueeze(inputs["input_ids"], 0).to(device)
+    attention_mask = torch.unsqueeze(inputs["attention_mask"], 0).to(device)
+    score = model(input_ids=input_ids, 
+                               attention_mask=attention_mask).cpu().detach().numpy()[0, 0] * 100
     
     print(score)
     

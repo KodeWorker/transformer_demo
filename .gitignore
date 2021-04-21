@@ -1,4 +1,6 @@
 *.pyc
 *.pyd
+*.bin
+*.pt
 data/
 img/

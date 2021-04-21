@@ -108,7 +108,7 @@ if __name__ == "__main__":
         print("-" * 10)
         print(f"Train loss: {train_loss}")
     
-        eval_loss = eval_model(model, data_loader, loss_fn, device)
+        eval_loss = eval_model(model, valid_loader, loss_fn, device)
         print(f"Eval loss: {eval_loss}")
     
     torch.save(model.state_dict(), save_model_path)
