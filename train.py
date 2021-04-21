@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # +++ setup wine review dataset +++
     review_df = pd.read_csv(review_path)    
     reviews = review_df["description"]
-    targets = review_df["points"] / 100
+    targets = review_df["points"] / 100 # rating from 0 to 100 -> 0.0 to 1.0
     
     dataset = WineReviewDataset(reviews, targets, tokenizer)
     # --- setup wine review dataset ---
