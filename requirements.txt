@@ -1,2 +1,6 @@
 torch
 transformers
+sentencepiece
+datasets
+soundfile
+pyaudio

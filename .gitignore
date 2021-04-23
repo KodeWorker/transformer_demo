@@ -2,5 +2,6 @@
 *.pyd
 *.bin
 *.pt
+*.wav
 data/
 img/
