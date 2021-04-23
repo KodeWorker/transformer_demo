@@ -1,18 +1,17 @@
 import torch
 import numpy as np
 from model import SentimentRegressor
-from transformers import BertTokenizer
+from transformers import AlbertTokenizer
 
 if __name__ == "__main__":
     
     RANDOM_SEED = 42
     MAX_LEN = 150
-    PRE_TRAINED_MODEL_NAME = "bert-base-cased"
-    save_model_path = "./wine_review_model_state.bin"
+    PRE_TRAINED_MODEL_NAME = "albert-base-v2"
+    save_model_path = "../data/wine_review_albert.bin"
     
     # eval message
-    review = "tastes like shit"
-    print(f"{review}")
+    review = "Aromas include tropical fruit, broom, brimstone and dried herb. The palate isn't overly expressive, offering unripened apple, citrus and dried sage alongside brisk acidity."
     
     np.random.seed(RANDOM_SEED)
     torch.manual_seed(RANDOM_SEED)
@@ -23,7 +22,7 @@ if __name__ == "__main__":
     model.to(device)
     model.eval()
     
-    tokenizer = BertTokenizer.from_pretrained(PRE_TRAINED_MODEL_NAME)
+    tokenizer = AlbertTokenizer.from_pretrained(PRE_TRAINED_MODEL_NAME)
     
     encoding = tokenizer.encode_plus(
       review,
@@ -46,7 +45,8 @@ if __name__ == "__main__":
     input_ids = torch.unsqueeze(inputs["input_ids"], 0).to(device)
     attention_mask = torch.unsqueeze(inputs["attention_mask"], 0).to(device)
     score = model(input_ids=input_ids, 
-                               attention_mask=attention_mask).cpu().detach().numpy()[0, 0] * 100
+                               attention_mask=attention_mask).cpu().detach().numpy()[0, 0]
     
-    print(score)
+    print(f"review: {review}")
+    print(f"score: {score}")
     

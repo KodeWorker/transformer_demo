@@ -3,7 +3,7 @@ from torch.nn import MSELoss
 from torch.utils.data import random_split, DataLoader
 import pandas as pd
 import numpy as np
-from transformers import BertTokenizer, AdamW, get_linear_schedule_with_warmup
+from transformers import AlbertTokenizer, AdamW, get_linear_schedule_with_warmup
 from dataset import WineReviewDataset
 from model import SentimentRegressor
 from tqdm import tqdm
@@ -53,26 +53,26 @@ def eval_model(model, data_loader, loss_fn, device):
 
 if __name__ == "__main__":
     RANDOM_SEED = 42
-    PRE_TRAINED_MODEL_NAME = "bert-base-cased"
+    PRE_TRAINED_MODEL_NAME = "albert-base-v2"
     VAL_RATIO = 0.2
     N_WORKERS = 4
     BATCH_SIZE = 32
     EPOCHS = 10
     LEARNING_RATE = 2e-5
     
-    review_path = "./data/winemag-data-130k-v2.csv"
-    save_model_path = "./wine_review_model_state.bin"
+    review_path = "../data/winemag-data-130k-v2.csv"
+    save_model_path = "../data/wine_review_albert.bin"
     
     np.random.seed(RANDOM_SEED)
     torch.manual_seed(RANDOM_SEED)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     
-    tokenizer = BertTokenizer.from_pretrained(PRE_TRAINED_MODEL_NAME)
+    tokenizer = AlbertTokenizer.from_pretrained(PRE_TRAINED_MODEL_NAME)
     
     # +++ setup wine review dataset +++
     review_df = pd.read_csv(review_path)    
     reviews = review_df["description"]
-    targets = review_df["points"] / 100 # rating from 0 to 100 -> 0.0 to 1.0
+    targets = review_df["points"]
     
     dataset = WineReviewDataset(reviews, targets, tokenizer)
     # --- setup wine review dataset ---

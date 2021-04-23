@@ -1,6 +1,7 @@
 from transformers import BertTokenizer
 from tqdm import tqdm
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import os
 
@@ -17,7 +18,8 @@ if __name__ == "__main__":
     reviews = review_df["description"]
     targets = review_df["points"]
     
-    # review token length    
+    # review token length
+    """
     token_lens = []
     for txt in tqdm(reviews):
         tokens = tokenizer.encode(txt, max_length=512)
@@ -27,4 +29,11 @@ if __name__ == "__main__":
     plt.title(os.path.basename(review_path))
     plt.hist(token_lens, bins=N_BINS)
     plt.show()
+    """
     
+    # label statics
+    max_, min_ = np.max(targets), np.min(targets)
+    mean_, std_ = np.mean(targets), np.std(targets)
+    
+    print(f"(min, max) = ({max_}, {min_})")
+    print(f"(mean, std) = ({mean_}, {std_})")
